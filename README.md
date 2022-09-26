@@ -12,7 +12,6 @@ The [Tuberculosis X-Ray images](https://www.kaggle.com/kmader/pulmonary-chest-xr
 
 For more details about this project, please checkout my [YouTube Video](https://youtu.be/WFUL_oRT3nk):
 
-[![Watch the video](https://img.youtube.com/vi/WFUL_oRT3nk/maxresdefault.jpg)](https://youtu.be/WFUL_oRT3nk)
 
 ## Setup 
 
