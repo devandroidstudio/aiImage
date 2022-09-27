@@ -1,4 +1,5 @@
 let imageLoaded = false;
+let image;
 const URL = "https://teachablemachine.withgoogle.com/models/wYGvo9ymg/";
 let maxPredictions;
 $("#image-selector").change(function () {
@@ -6,6 +7,7 @@ $("#image-selector").change(function () {
 	let reader = new FileReader();
 	reader.onload = function () {
 		let dataURL = reader.result;
+		image = dateURL;
 		$("#selected-image").attr("src", dataURL);
 		$("#prediction-list").empty();
 		imageLoaded = true;
@@ -34,30 +36,30 @@ $("#predict-button").click(async function () {
 	if (!modelLoaded) { alert("The model must be loaded first"); return; }
 	if (!imageLoaded) { alert("Please select an image first"); return; }
 	
-	let image = $('#selected-image').get(0);
+// 	let image = $('#selected-image').get(0);
 	
-	// Pre-process the image
-	console.log( "Loading image..." );
-	let tensor = tf.browser.fromPixels(image, 3);
-		// .resizeNearestNeighbor([224, 224]) // change the image size
-		// .expandDims()
-		// .toFloat()
-		// .reverse(-1); // RGB -> BGR
-	let predictions = await model.predict(tensor).data();
+// 	// Pre-process the image
+// 	console.log( "Loading image..." );
+// 	let tensor = tf.browser.fromPixels(image, 3);
+// 		// .resizeNearestNeighbor([224, 224]) // change the image size
+// 		// .expandDims()
+// 		// .toFloat()
+// 		// .reverse(-1); // RGB -> BGR
+	let predictions = await model.model.predictTopK(image);
 	// console.log(predictions);
 	console.log(image);
-	let top5 = Array.from(predictions)
-		.map(function (p, i) { // this is Array.map
-			return {
-				probability: p,
-				className: TARGET_CLASSES[i] // we are selecting the value from the obj
-			};
-		}).sort(function (a, b) {
-			return b.probability - a.probability;
-		}).slice(0, 2);
+// 	let top5 = Array.from(predictions)
+// 		.map(function (p, i) { // this is Array.map
+// 			return {
+// 				probability: p,
+// 				className: TARGET_CLASSES[i] // we are selecting the value from the obj
+// 			};
+// 		}).sort(function (a, b) {
+// 			return b.probability - a.probability;
+// 		}).slice(0, 2);
 
 	$("#prediction-list").empty();
-	top5.forEach(function (p) {
-		$("#prediction-list").append(`<li>${p.className}: ${p.probability.toFixed(6)}</li>`);
+	predictions.forEach(function (p) {
+		$("#prediction-list").append(`<li>${p.className}: ${p.probability}</li>`);
 		});
 });
